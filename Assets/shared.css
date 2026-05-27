@@ -14,6 +14,19 @@
   --display: 'Orbitron', sans-serif;
 }
 
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb {
+  background: rgba(0,255,0,0.25);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0,255,0,0.5); }
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,255,0,0.25) var(--bg2);
+}
+
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -244,6 +257,7 @@ footer {
   transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--green); }
+.footer-support { text-align: center; }
 .footer-credit { text-align: right; }
 .footer-bottom {
   max-width: 1200px; margin: 1.5rem auto 0;
@@ -258,6 +272,7 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-support { text-align: left; }
   .footer-credit { text-align: left; }
 }
 
