@@ -6,107 +6,13 @@
 <link rel="icon" type="image/png" href="Assets/HelNet_Logo.png">
 <title>Terms of Service — HelNet</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Assets/shared.css">
 <style>
-  :root {
-    --green: #00ff00;
-    --green-dim: #00cc00;
-    --green-faint: rgba(0,255,0,0.08);
-    --green-glow: rgba(0,255,0,0.4);
-    --bg: #020a02;
-    --bg2: #040d04;
-    --bg3: #071207;
-    --border: rgba(0,255,0,0.2);
-    --text: #b0e8b0;
-    --text-dim: #5a7a5a;
-    --mono: 'Share Tech Mono', monospace;
-    --display: 'Orbitron', sans-serif;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 14px;
-    line-height: 1.7;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
-    pointer-events: none;
-    z-index: 9998;
-  }
-
-  .grid-bg {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-      linear-gradient(rgba(0,255,0,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 10001;
-    background: #071207;
-    border-bottom: 1px solid rgba(0,255,0,0.4);
-    box-shadow: 0 2px 20px rgba(0,255,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2.5rem;
-    height: 68px;
-  }
-
-  .nav-logo {
-    font-family: var(--display);
-    font-weight: 900;
-    font-size: 1.5rem;
-    color: var(--green);
-    text-shadow: 0 0 8px rgba(0,255,0,0.5);
-    letter-spacing: 0.15em;
-    text-decoration: none;
-  }
-
-  .nav-logo span { color: var(--text-dim); font-weight: 400; font-size: 0.8rem; display: block; letter-spacing: 0.3em; margin-top: -4px; }
-
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 0.88rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.2s, text-shadow 0.2s;
-  }
-  .nav-links a:hover { color: var(--green); text-shadow: 0 0 10px var(--green-glow); }
-
   /* CONTENT */
   .page-wrap {
     max-width: 820px;
     margin: 0 auto;
-    padding: 120px 2rem 6rem;
+    padding: 88px 2rem 5rem;
     position: relative;
     z-index: 1;
   }
@@ -197,15 +103,63 @@
 
 <div class="grid-bg"></div>
 
+<div class="status-bar">
+  <span><span class="status-dot"></span>ONLINE</span>
+  <span>HELNET DOCS</span>
+  <span style="flex:1"></span>
+  <span id="utc-clock"></span>
+</div>
 <nav>
-  <a href="/" class="nav-logo">HELNET<span>DOCUMENTATION</span></a>
+  <a href="/" class="nav-logo">
+    <img src="Assets/HelNet_Logo.png" alt="">
+    HELNET <span>LEGAL</span>
+  </a>
   <ul class="nav-links">
-    <li><a href="/#modules">Modules</a></li>
-    <li><a href="/#setup">Setup</a></li>
-    <li><a href="/#commands">Commands</a></li>
-    <li><a href="guides/getting-started">Guides</a></li>
+    <li><a href="/">Home</a></li>
+    <li class="nav-dropdown">
+      <button class="nav-dropbtn">Legal</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="terms">Terms of Service</a></li>
+        <li><a href="privacy">Privacy Policy</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown">
+      <button class="nav-dropbtn">Guides</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="guides/getting-started">Getting Started</a></li>
+        <li class="nav-dropdown-sep"></li>
+        <li><a href="guides/announcement-module">Announcement Module</a></li>
+        <li><a href="guides/challenges-module">Challenges Module</a></li>
+        <li><a href="guides/deimos-module">Deimos Module</a></li>
+        <li><a href="guides/division-module">Division Module</a></li>
+        <li><a href="guides/infopost-module">Infopost Module</a></li>
+        <li><a href="guides/time-module">Time Module</a></li>
+      </ul>
+    </li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Navigation</div>
+    <a href="/">Home</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Legal</div>
+    <a href="terms">Terms of Service</a>
+    <a href="privacy">Privacy Policy</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Guides</div>
+    <a href="guides/getting-started">Getting Started</a>
+    <a href="guides/announcement-module">Announcement Module</a>
+    <a href="guides/challenges-module">Challenges Module</a>
+    <a href="guides/deimos-module">Deimos Module</a>
+    <a href="guides/division-module">Division Module</a>
+    <a href="guides/infopost-module">Infopost Module</a>
+    <a href="guides/time-module">Time Module</a>
+  </div>
+</div>
 
 <div class="page-wrap">
   <div class="page-tag">Legal</div>
@@ -263,5 +217,6 @@
   </div>
 </footer>
 
+<script src="Assets/nav.js"></script>
 </body>
 </html>
