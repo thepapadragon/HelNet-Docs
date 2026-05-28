@@ -814,6 +814,7 @@
 
   .boot-ok   { color: var(--green); }
   .boot-warn { color: #ffcc00; }
+  [id$="-bar"] { font-size: 0.78em; vertical-align: middle; letter-spacing: 0.05em; }
   .boot-logo {
     font-family: var(--display);
     font-weight: 900;
@@ -859,13 +860,13 @@
     <div class="boot-logo">HELNET</div>
     <hr class="boot-divider" id="bd1">
     <div class="boot-line" id="bl0"><span class="boot-label">SYS</span><span>HELNET OS v3.2.0 — INITIALIZING</span></div>
-    <div class="boot-line" id="bl1"><span class="boot-label">BIOS</span><span>Memory check... <span class="boot-ok">128 MB OK</span></span></div>
+    <div class="boot-line" id="bl1"><span class="boot-label">BIOS</span><span>Memory check... <span id="bl1-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl1-ok" style="opacity:0">128 MB OK</span></span></div>
     <div class="boot-line" id="bl2"><span class="boot-label">CPU</span><span>SUPER EARTH PROCESSOR @ 3.3GHz <span class="boot-ok">[ OK ]</span></span></div>
-    <div class="boot-line" id="bl3"><span class="boot-label">NET</span><span>Connecting to SUPER EARTH COMMAND... <span class="boot-ok">[ OK ]</span></span></div>
-    <div class="boot-line" id="bl4"><span class="boot-label">MOD</span><span>Loading /helnet/modules/time... <span class="boot-ok">[ OK ]</span></span></div>
-    <div class="boot-line" id="bl5"><span class="boot-label">MOD</span><span>Loading /helnet/modules/division... <span class="boot-ok">[ OK ]</span></span></div>
-    <div class="boot-line" id="bl6"><span class="boot-label">MOD</span><span>Loading /helnet/modules/announce... <span class="boot-ok">[ OK ]</span></span></div>
-    <div class="boot-line" id="bl7"><span class="boot-label">AUTH</span><span>Verifying Helldiver credentials... <span class="boot-ok">AUTHORIZED</span></span></div>
+    <div class="boot-line" id="bl3"><span class="boot-label">NET</span><span>Connecting to SUPER EARTH COMMAND... <span id="bl3-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl3-ok" style="opacity:0">[ OK ]</span></span></div>
+    <div class="boot-line" id="bl4"><span class="boot-label">MOD</span><span>Loading /helnet/modules/time... <span id="bl4-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl4-ok" style="opacity:0">[ OK ]</span></span></div>
+    <div class="boot-line" id="bl5"><span class="boot-label">MOD</span><span>Loading /helnet/modules/division... <span id="bl5-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl5-ok" style="opacity:0">[ OK ]</span></span></div>
+    <div class="boot-line" id="bl6"><span class="boot-label">MOD</span><span>Loading /helnet/modules/announce... <span id="bl6-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl6-ok" style="opacity:0">[ OK ]</span></span></div>
+    <div class="boot-line" id="bl7"><span class="boot-label">AUTH</span><span>Verifying Helldiver credentials... <span id="bl7-bar">░░░░░░░░░░</span> <span class="boot-ok" id="bl7-ok" style="opacity:0">AUTHORIZED</span></span></div>
     <hr class="boot-divider" id="bd2">
     <div class="boot-line" id="bl8"><span class="boot-label"></span><span>SYSTEM READY. MANAGING DEMOCRACY<span class="boot-cursor"></span></span></div>
   </div>
@@ -1185,13 +1186,31 @@
     const beam    = document.getElementById('boot-beam');
     const textBox = document.getElementById('boot-text');
 
-    const lineIds  = ['bl0','bl1','bl2','bl3','bl4','bl5','bl6','bl7','bl8'];
-    const divIds   = ['bd1','bd2'];
-    const lineDelay = 160; // ms between each boot line
+    const lineIds      = ['bl0','bl1','bl2','bl3','bl4','bl5','bl6','bl7','bl8'];
+    const baseDelay    = 170;
+    const jitter       = 220;
+    const barDurations = { bl1: 340, bl3: 560, bl4: 160, bl5: 300, bl6: 130, bl7: 480 };
 
     function showEl(id) {
       const el = document.getElementById(id);
       if (el) el.classList.add('show');
+    }
+
+    function animateBar(barId, okId, duration) {
+      const barEl = document.getElementById(barId);
+      const okEl  = document.getElementById(okId);
+      if (!barEl) return;
+      const total = 10;
+      let filled = 0;
+      const step = Math.max(duration / total, 16);
+      const timer = setInterval(() => {
+        filled++;
+        barEl.textContent = '▓'.repeat(filled) + '░'.repeat(total - filled);
+        if (filled >= total) {
+          clearInterval(timer);
+          if (okEl) okEl.style.opacity = '1';
+        }
+      }, step);
     }
 
     // Step 1: white beam flashes on (tiny delay so paint settles)
@@ -1200,20 +1219,26 @@
       setTimeout(() => {
         beam.classList.add('expand');
 
-        // Step 3: after expansion, show text
+        // Step 3: after expansion, show text with jitter + loading bars
         setTimeout(() => {
           textBox.classList.add('visible');
           showEl('bd1');
 
-          lineIds.forEach((id, i) => {
+          let t = 0;
+          lineIds.forEach((id) => {
+            t += baseDelay + Math.random() * jitter;
+            const dur = barDurations[id] || 0;
+            const fireAt = t;
             setTimeout(() => {
               showEl(id);
-              if (id === 'bl7') setTimeout(() => showEl('bd2'), lineDelay * 0.6);
-            }, i * lineDelay);
+              if (id === 'bl7') setTimeout(() => showEl('bd2'), 160);
+              if (dur) animateBar(id + '-bar', id + '-ok', dur);
+            }, fireAt);
+            if (dur) t += dur + 70;
           });
 
-          // Step 4: after all lines, fade out the boot screen
-          const totalTextTime = lineIds.length * lineDelay + 900;
+          // Step 4: after all lines + bars complete, fade out
+          const totalTextTime = t + 900;
           setTimeout(() => {
             screen.classList.add('fade-out');
             setTimeout(() => {
@@ -1275,13 +1300,42 @@
 
       document.body.style.overflow = 'hidden';
 
-      const lineIds  = ['bl0','bl1','bl2','bl3','bl4','bl5','bl6','bl7','bl8'];
-      const lineDelay = 160;
+      const lineIds      = ['bl0','bl1','bl2','bl3','bl4','bl5','bl6','bl7','bl8'];
+      const baseDelay    = 190;
+      const jitter       = 110;
+      const barDurations = { bl1: 280, bl3: 450, bl4: 220, bl5: 200, bl6: 185, bl7: 360 };
 
       function showEl(id) {
         const el = document.getElementById(id);
         if (el) el.classList.add('show');
       }
+
+      function animateBar(barId, okId, duration) {
+        const barEl = document.getElementById(barId);
+        const okEl  = document.getElementById(okId);
+        if (!barEl) return;
+        const total = 10;
+        let filled = 0;
+        barEl.textContent = '░'.repeat(total);
+        if (okEl) okEl.style.opacity = '0';
+        const step = Math.max(duration / total, 16);
+        const timer = setInterval(() => {
+          filled++;
+          barEl.textContent = '▓'.repeat(filled) + '░'.repeat(total - filled);
+          if (filled >= total) {
+            clearInterval(timer);
+            if (okEl) okEl.style.opacity = '1';
+          }
+        }, step);
+      }
+
+      // Reset bar state for replay
+      Object.keys(barDurations).forEach(id => {
+        const barEl = document.getElementById(id + '-bar');
+        const okEl  = document.getElementById(id + '-ok');
+        if (barEl) barEl.textContent = '░░░░░░░░░░';
+        if (okEl)  okEl.style.opacity = '0';
+      });
 
       setTimeout(() => {
         setTimeout(() => {
@@ -1289,13 +1343,21 @@
           setTimeout(() => {
             textBox.classList.add('visible');
             showEl('bd1');
-            lineIds.forEach((id, i) => {
+
+            let t = 0;
+            lineIds.forEach((id) => {
+              t += baseDelay + Math.random() * jitter;
+              const dur = barDurations[id] || 0;
+              const fireAt = t;
               setTimeout(() => {
                 showEl(id);
-                if (id === 'bl7') setTimeout(() => showEl('bd2'), lineDelay * 0.6);
-              }, i * lineDelay);
+                if (id === 'bl7') setTimeout(() => showEl('bd2'), 160);
+                if (dur) animateBar(id + '-bar', id + '-ok', dur);
+              }, fireAt);
+              if (dur) t += dur + 70;
             });
-            const totalTextTime = lineIds.length * lineDelay + 900;
+
+            const totalTextTime = t + 900;
             setTimeout(() => {
               screen.classList.add('fade-out');
               setTimeout(() => {
