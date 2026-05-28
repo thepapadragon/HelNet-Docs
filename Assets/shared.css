@@ -100,6 +100,7 @@ nav {
   color: var(--green); text-shadow: 0 0 8px rgba(0,255,0,0.5);
   letter-spacing: 0.15em; text-decoration: none;
   display: flex; align-items: center; gap: 0.6rem;
+  line-height: 1;
 }
 .nav-logo img {
   width: 24px; height: 24px; object-fit: contain;
