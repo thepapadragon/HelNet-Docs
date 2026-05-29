@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-29T02:24:31Z",
+  "online": true,
+  "uptime_seconds": 0,
+  "guild_count": 11,
+  "modules": {
+    "time": 8,
+    "division": 0,
+    "announcement": 0,
+    "infopost": 8,
+    "deimos": 6,
+    "challenges": 4
+  }
+}
