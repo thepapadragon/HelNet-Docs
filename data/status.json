@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-29T02:36:37Z",
+  "timestamp": "2026-05-29T02:38:37Z",
   "online": true,
-  "uptime_seconds": 0,
+  "uptime_seconds": 120,
   "guild_count": 11,
   "modules": {
     "time": 8,
