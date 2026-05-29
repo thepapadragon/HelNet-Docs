@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="Assets/HelNet_Logo.png">
+<title>Bot Status — HelNet</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Assets/shared.css">
+<style>
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 88px 2rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--green-dim);
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .page-tag::before { content: '> '; color: var(--green); }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 900;
+    color: var(--green);
+    text-shadow: 0 0 20px var(--green-glow);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── HERO STATUS BANNER ── */
+  .status-banner {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .status-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--green);
+    transition: background 0.3s;
+  }
+  .status-banner.offline::before { background: #ff4444; }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .status-badge-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    flex-shrink: 0;
+  }
+  .status-badge-dot.online { animation: bigPulse 2s infinite; }
+  .status-badge-dot.offline { background: #ff4444; box-shadow: 0 0 8px #ff4444; }
+  @keyframes bigPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+    50% { opacity: 0.5; box-shadow: 0 0 16px var(--green); }
+  }
+  .status-badge-text {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: 0.1em;
+  }
+  .status-badge-text.offline { color: #ff4444; }
+
+  .status-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .status-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .status-meta-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .status-meta-value {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.05em;
+  }
+  .status-meta-value.dim { color: var(--text-dim); font-size: 0.85rem; font-weight: 400; font-family: var(--mono); }
+
+  .status-last-seen {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  /* ── MODULE TABLE ── */
+  .section-header {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--green);
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: rgba(0,255,0,0.03);
+    margin-top: 2rem;
+  }
+
+  .module-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .module-table th {
+    text-align: left;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .module-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0,255,0,0.06);
+    font-size: 0.85rem;
+    vertical-align: middle;
+  }
+  .module-table tr:last-child td { border-bottom: none; }
+  .module-table tr:hover td { background: var(--green-faint); }
+
+  .mod-name { color: var(--green); letter-spacing: 0.05em; }
+  .mod-count { color: var(--text); }
+  .mod-bar-wrap {
+    width: 160px;
+  }
+  .mod-bar-track {
+    height: 4px;
+    background: rgba(0,255,0,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .mod-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  /* ── ERROR ── */
+  .status-error {
+    border: 1px solid rgba(255,68,68,0.3);
+    background: rgba(255,68,68,0.04);
+    padding: 1.5rem 2rem;
+    color: #ff6666;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .status-error::before { content: '[ERROR] '; color: #ff4444; }
+
+  /* ── REFRESH ── */
+  .refresh-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .refresh-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--green-dim);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 0.3rem 0.75rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .refresh-btn:hover { border-color: var(--green); color: var(--green); }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="./" class="nav-logo">
+    <img src="Assets/HelNet_Logo.png" alt="HelNet Logo" style="height:28px;width:auto;display:block;">
+    HELNET <span>COMMAND NETWORK</span>
+  </a>
+  <ul class="nav-links">
+    <li class="nav-dropdown">
+      <button class="nav-dropbtn">Legal</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="terms">Terms of Service</a></li>
+        <li><a href="privacy">Privacy Policy</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown">
+      <button class="nav-dropbtn">Guides</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="guides/getting-started">Getting Started</a></li>
+        <li class="nav-dropdown-sep"></li>
+        <li><a href="guides/announcement-module">Announcement Module</a></li>
+        <li><a href="guides/challenges-module">Challenges Module</a></li>
+        <li><a href="guides/deimos-module">Deimos Module</a></li>
+        <li><a href="guides/division-module">Division Module</a></li>
+        <li><a href="guides/infopost-module">Infopost Module</a></li>
+        <li><a href="guides/time-module">Time Module</a></li>
+      </ul>
+    </li>
+    <li><a href="transmissions">Transmissions</a></li>
+    <li><a href="status" class="nav-active">Status</a></li>
+    <li><a href="credits">Credits</a></li>
+  </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <ul>
+    <li><a href="terms">Terms of Service</a></li>
+    <li><a href="privacy">Privacy Policy</a></li>
+    <li class="nav-sep"></li>
+    <li><a href="guides/getting-started">Getting Started</a></li>
+    <li><a href="guides/announcement-module">Announcement Module</a></li>
+    <li><a href="guides/challenges-module">Challenges Module</a></li>
+    <li><a href="guides/deimos-module">Deimos Module</a></li>
+    <li><a href="guides/division-module">Division Module</a></li>
+    <li><a href="guides/infopost-module">Infopost Module</a></li>
+    <li><a href="guides/time-module">Time Module</a></li>
+    <li class="nav-sep"></li>
+    <li><a href="transmissions">Transmissions</a></li>
+    <li><a href="status">Status</a></li>
+    <li><a href="credits">Credits</a></li>
+  </ul>
+</div>
+
+<main class="page-wrap">
+  <div class="page-tag">HELNET // COMMAND NETWORK</div>
+  <h1>BOT STATUS</h1>
+  <p class="page-subtitle">LIVE OPERATIONAL STATUS — DATA REFRESHES EVERY ~60 SECONDS FROM BOT</p>
+
+  <div class="refresh-bar">
+    <span id="last-fetched">FETCHING...</span>
+    <button class="refresh-btn" id="refresh-btn">&#x21BB; REFRESH</button>
+  </div>
+
+  <div id="status-content">
+    <div class="status-error" style="display:none" id="status-error">Could not load status data.</div>
+    <div id="status-main" style="display:none">
+      <div class="status-banner" id="status-banner">
+        <div class="status-badge">
+          <div class="status-badge-dot" id="badge-dot"></div>
+          <div class="status-badge-text" id="badge-text">—</div>
+        </div>
+        <div class="status-meta">
+          <div class="status-meta-item">
+            <div class="status-meta-label">Uptime</div>
+            <div class="status-meta-value" id="stat-uptime">—</div>
+          </div>
+          <div class="status-meta-item">
+            <div class="status-meta-label">Servers</div>
+            <div class="status-meta-value" id="stat-guilds">—</div>
+          </div>
+          <div class="status-meta-item">
+            <div class="status-meta-label">Last Report</div>
+            <div class="status-meta-value dim" id="stat-last">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">// MODULE DEPLOYMENT</div>
+      <table class="module-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Servers Active</th>
+            <th style="width:180px">Adoption</th>
+          </tr>
+        </thead>
+        <tbody id="module-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script src="Assets/nav.js"></script>
+<script>
+const STALE_MS = 5 * 60 * 1000;
+const MODULE_LABELS = {
+  time: 'Time',
+  division: 'Division',
+  announcement: 'Announcement',
+  infopost: 'InfoPost',
+  deimos: 'DEIMOS',
+  challenges: 'Challenges'
+};
+
+function fmtUptime(s) {
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (d > 0) return d + 'd ' + h + 'h ' + (s % 3600 < 3600 ? m + 'm' : '');
+  if (h > 0) return h + 'h ' + m + 'm';
+  return m + 'm';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function load() {
+  const errorEl  = document.getElementById('status-error');
+  const mainEl   = document.getElementById('status-main');
+  const fetchedEl = document.getElementById('last-fetched');
+
+  errorEl.style.display = 'none';
+  mainEl.style.display = 'none';
+
+  let data;
+  try {
+    const res = await fetch('data/status.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+  } catch (e) {
+    errorEl.style.display = '';
+    errorEl.textContent = 'Could not load status data. ' + e.message;
+    fetchedEl.textContent = 'LAST ATTEMPT: ' + new Date().toUTCString();
+    return;
+  }
+
+  const ts = new Date(data.timestamp);
+  const stale = (Date.now() - ts.getTime()) > STALE_MS;
+  const online = data.online && !stale;
+
+  // Banner
+  const banner = document.getElementById('status-banner');
+  const dot    = document.getElementById('badge-dot');
+  const txt    = document.getElementById('badge-text');
+  dot.className = 'status-badge-dot ' + (online ? 'online' : 'offline');
+  txt.textContent = online ? 'ONLINE' : 'OFFLINE';
+  txt.className = 'status-badge-text' + (online ? '' : ' offline');
+  banner.className = 'status-banner' + (online ? '' : ' offline');
+
+  document.getElementById('stat-uptime').textContent =
+    online && data.uptime_seconds != null ? fmtUptime(data.uptime_seconds) : '—';
+  document.getElementById('stat-guilds').textContent =
+    data.guild_count != null ? data.guild_count : '—';
+  document.getElementById('stat-last').textContent = ts.toUTCString();
+
+  // Module table
+  const tbody = document.getElementById('module-tbody');
+  const mods = data.modules || {};
+  const maxCount = Math.max(1, ...Object.values(mods));
+  tbody.innerHTML = Object.entries(mods).map(([key, count]) => {
+    const pct = Math.round((count / maxCount) * 100);
+    const label = MODULE_LABELS[key] || key;
+    return `<tr>
+      <td class="mod-name">${escHtml(label)}</td>
+      <td class="mod-count">${escHtml(count)}</td>
+      <td class="mod-bar-wrap">
+        <div class="mod-bar-track">
+          <div class="mod-bar-fill" style="width:${pct}%"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  fetchedEl.textContent = 'FETCHED: ' + new Date().toUTCString();
+  mainEl.style.display = '';
+}
+
+load();
+document.getElementById('refresh-btn').addEventListener('click', load);
+</script>
+</body>
+</html>

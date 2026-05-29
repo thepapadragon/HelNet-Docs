@@ -849,6 +849,158 @@
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
+
+  /* ── STATUS WIDGET ── */
+  .status-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+    padding: 0.65rem 1.1rem;
+    border: 1px solid var(--border);
+    background: rgba(0,255,0,0.03);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    flex-wrap: wrap;
+  }
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    flex-shrink: 0;
+  }
+  .status-dot.offline { background: #ff4444; box-shadow: 0 0 6px #ff4444; animation: none; }
+  .status-dot.online { animation: statusPulse 2s infinite; }
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--green); }
+    50% { opacity: 0.5; box-shadow: 0 0 12px var(--green); }
+  }
+  .status-label { color: var(--green); }
+  .status-label.offline { color: #ff4444; }
+  .status-divider { width: 1px; height: 1rem; background: var(--border); }
+  .status-stat { color: var(--text-dim); }
+  .status-stat span { color: var(--text); }
+  .status-link {
+    color: var(--green-dim);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .status-link:hover { color: var(--green); border-color: var(--green); }
+
+  /* ── TRANSMISSION TOAST ── */
+  #tx-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9000;
+    width: 340px;
+    max-width: calc(100vw - 2rem);
+    background: var(--bg2);
+    border: 1px solid var(--green);
+    box-shadow: 0 0 24px rgba(0,255,0,0.15), inset 0 0 40px rgba(0,255,0,0.02);
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(.16,1,.3,1), opacity 0.3s;
+    pointer-events: none;
+  }
+  #tx-toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .tx-toast-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,255,0,0.05);
+  }
+  .tx-toast-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .tx-toast-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: txPulse 1.5s infinite;
+  }
+  @keyframes txPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .tx-toast-close {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0.1rem 0.25rem;
+    transition: color 0.2s;
+  }
+  .tx-toast-close:hover { color: var(--green); }
+  .tx-toast-body {
+    padding: 0.9rem;
+  }
+  .tx-toast-id {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.3rem;
+  }
+  .tx-toast-subject {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .tx-toast-preview {
+    font-size: 0.78rem;
+    color: var(--text);
+    opacity: 0.75;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .tx-toast-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.1rem;
+    transition: border-color 0.2s;
+  }
+  .tx-toast-link:hover { border-color: var(--green); }
 </style>
 </head>
 <body>
@@ -909,6 +1061,8 @@
         <li><a href="guides/time-module">Time Module</a></li>
       </ul>
     </li>
+    <li><a href="transmissions">Transmissions</a></li>
+    <li><a href="status">Status</a></li>
     <li><a href="credits">Credits</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
@@ -917,6 +1071,8 @@
   <div class="nav-mobile-section">
     <div class="nav-mobile-label">Navigation</div>
     <a href="./">Home</a>
+    <a href="transmissions">Transmissions</a>
+    <a href="status">Status</a>
     <a href="credits">Credits</a>
   </div>
   <div class="nav-mobile-section">
@@ -950,6 +1106,18 @@
   <div class="hero-cta">
     <a href="#setup" class="btn btn-primary">▶ Get Started</a>
     <a href="#modules" class="btn btn-ghost">View Modules</a>
+  </div>
+  <div class="status-widget" id="status-widget" style="display:none">
+    <div class="status-indicator">
+      <div class="status-dot" id="sw-dot"></div>
+      <span class="status-label" id="sw-label">—</span>
+    </div>
+    <div class="status-divider"></div>
+    <div class="status-stat">SERVERS <span id="sw-guilds">—</span></div>
+    <div class="status-divider"></div>
+    <div class="status-stat">UPTIME <span id="sw-uptime">—</span></div>
+    <div class="status-divider"></div>
+    <a href="status" class="status-link">FULL STATUS &rsaquo;</a>
   </div>
   <div class="scroll-hint">
     <svg width="14" height="8" viewBox="0 0 14 8"><polyline points="1,1 7,7 13,1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -1076,16 +1244,24 @@
       <tbody>
         <tr><td><code>/setup server</code></td><td>Core</td><td>Set your server's accent color for embed theming</td></tr>
         <tr><td><code>/setup modules</code></td><td>Core</td><td>Enable or disable individual HelNet modules</td></tr>
+        <tr><td><code>/time-terminal</code></td><td>Time</td><td><em>Admin only.</em> Deploy the live timezone terminal into the current channel</td></tr>
+        <tr><td><code>/set-time-pref</code></td><td>Time</td><td>Set your UTC offset and DST preference for timezone display and time suggestions</td></tr>
         <tr><td><code>/division wizard</code></td><td>Division</td><td>Admin control panel: create, edit, delete divisions and configure welcome messages &amp; terminal</td></tr>
         <tr><td><code>/lookup member:@user</code></td><td>Division</td><td>View which divisions a member belongs to and their primary (★)</td></tr>
         <tr><td><code>/lookup division:name</code></td><td>Division</td><td>List all primary and secondary members in a division</td></tr>
         <tr><td><code>/announcement wizard</code></td><td>Announcement</td><td>Create and manage announcement presets (admin)</td></tr>
         <tr><td><code>/announcement send</code></td><td>Announcement</td><td>Post an announcement using a saved preset</td></tr>
+        <tr><td><code>/message send</code></td><td>InfoPost</td><td>Post a styled info message with optional title and image</td></tr>
+        <tr><td><code>/message wizard</code></td><td>InfoPost</td><td><em>Admin only.</em> Configure allowed roles and accent color for InfoPost</td></tr>
         <tr><td><code>/deimos kill @user</code></td><td>DEIMOS</td><td>Flag a suspected spambot for community review. Requires 2 confirmations within 5 minutes</td></tr>
         <tr><td><code>/deimos killboard</code></td><td>DEIMOS</td><td>Display the Enforcer leaderboard for your server</td></tr>
+        <tr><td><code>/deimos help</code></td><td>DEIMOS</td><td>View the full DEIMOS guide in Discord</td></tr>
         <tr><td><code>/deimos1 revive @user</code></td><td>DEIMOS</td><td><em>Mod only.</em> Reverse a kill, unmute target, adjust scores</td></tr>
+        <tr><td><code>/deimos1 revive @user mute:&lt;duration&gt;</code></td><td>DEIMOS</td><td><em>Mod only.</em> Reverse a kill and timeout all voters (1h–28d)</td></tr>
         <tr><td><code>/deimos1 ban @user</code></td><td>DEIMOS</td><td><em>Mod only.</em> Ban a user and broadcast to the DEIMOS Network</td></tr>
         <tr><td><code>/deimos1 logchannel</code></td><td>DEIMOS</td><td><em>Admin only.</em> Set the mod log channel for kill reports</td></tr>
+        <tr><td><code>/deimos1 resetkillboard</code></td><td>DEIMOS</td><td><em>Admin only.</em> Reset killboard scores and false positive marks</td></tr>
+        <tr><td><code>/challenge</code></td><td>Challenges</td><td>Open the challenge interface — view challenges, submit proof, and review your history</td></tr>
       </tbody>
     </table>
   </div>
@@ -1376,5 +1552,93 @@
 
 </script>
 <script src="Assets/nav.js"></script>
+
+<!-- Status widget -->
+<script>
+(async () => {
+  const STALE_MS = 5 * 60 * 1000;
+  const widget = document.getElementById('status-widget');
+  const dot    = document.getElementById('sw-dot');
+  const label  = document.getElementById('sw-label');
+  const guilds = document.getElementById('sw-guilds');
+  const uptime = document.getElementById('sw-uptime');
+
+  function fmtUptime(s) {
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    if (d > 0) return d + 'd ' + h + 'h';
+    if (h > 0) return h + 'h ' + m + 'm';
+    return m + 'm';
+  }
+
+  let data;
+  try {
+    const res = await fetch('data/status.json?v=' + Date.now());
+    if (!res.ok) throw new Error();
+    data = await res.json();
+  } catch {
+    widget.style.display = '';
+    dot.classList.add('offline');
+    label.textContent = 'OFFLINE';
+    label.classList.add('offline');
+    guilds.textContent = '—';
+    uptime.textContent = '—';
+    return;
+  }
+
+  const stale = (Date.now() - new Date(data.timestamp).getTime()) > STALE_MS;
+  const online = data.online && !stale;
+
+  widget.style.display = '';
+  dot.classList.add(online ? 'online' : 'offline');
+  label.textContent = online ? 'ONLINE' : 'OFFLINE';
+  if (!online) label.classList.add('offline');
+  guilds.textContent = data.guild_count ?? '—';
+  uptime.textContent = online && data.uptime_seconds != null ? fmtUptime(data.uptime_seconds) : '—';
+})();
+</script>
+
+<!-- Transmission toast -->
+<div id="tx-toast" role="status" aria-live="polite">
+  <div class="tx-toast-header">
+    <span class="tx-toast-label">INCOMING TRANSMISSION</span>
+    <button class="tx-toast-close" id="tx-toast-close" aria-label="Dismiss">&#x2715;</button>
+  </div>
+  <div class="tx-toast-body">
+    <div class="tx-toast-id" id="tx-toast-id"></div>
+    <div class="tx-toast-subject" id="tx-toast-subject"></div>
+    <div class="tx-toast-preview" id="tx-toast-preview"></div>
+    <a href="transmissions" class="tx-toast-link">VIEW ALL TRANSMISSIONS &rsaquo;</a>
+  </div>
+</div>
+<script>
+(async () => {
+  const DISMISS_KEY = 'tx-dismissed';
+  let transmissions;
+  try {
+    const res = await fetch('data/transmissions.json?v=' + Date.now());
+    if (!res.ok) return;
+    transmissions = await res.json();
+  } catch { return; }
+
+  if (!transmissions || !transmissions.length) return;
+  const latest = transmissions[0];
+  const dismissedId = sessionStorage.getItem(DISMISS_KEY);
+  if (dismissedId === latest.id) return;
+
+  document.getElementById('tx-toast-id').textContent = (latest.id || '') + (latest.date ? '  //  ' + latest.date : '');
+  document.getElementById('tx-toast-subject').textContent = latest.subject || 'UNTITLED';
+  document.getElementById('tx-toast-preview').textContent = latest.body || '';
+
+  const toast = document.getElementById('tx-toast');
+  setTimeout(() => toast.classList.add('visible'), 1200);
+
+  document.getElementById('tx-toast-close').addEventListener('click', () => {
+    toast.classList.remove('visible');
+    sessionStorage.setItem(DISMISS_KEY, latest.id);
+  });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "TX-003",
+    "date": "2025-05-28",
+    "priority": "LOW",
+    "subject": "Infopost Module v1.2 Released",
+    "body": "The Infopost module has been updated to v1.2. This release includes improved embed formatting and support for multi-image posts. Update your bot to receive the latest features. No breaking changes.",
+    "author": "HELNET-OPS"
+  },
+  {
+    "id": "TX-002",
+    "date": "2025-05-20",
+    "priority": "MEDIUM",
+    "subject": "Scheduled Maintenance — May 22",
+    "body": "HelNet command infrastructure will undergo scheduled maintenance on May 22 between 02:00–04:00 UTC. Bot responses may be delayed or unavailable during this window. Apologies for any disruption to your operations.",
+    "author": "HELNET-OPS"
+  },
+  {
+    "id": "TX-001",
+    "date": "2025-05-10",
+    "priority": "HIGH",
+    "subject": "HelNet Documentation Site Launch",
+    "body": "The official HelNet documentation site is now live. All module guides, command references, and setup instructions are available here. Bookmark this site for future reference. More guides will be added as new modules are released.",
+    "author": "HELNET-OPS"
+  }
+]
