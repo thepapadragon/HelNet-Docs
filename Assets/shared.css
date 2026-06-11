@@ -10,6 +10,10 @@
   --border: rgba(0,255,0,0.2);
   --text: #b0e8b0;
   --text-dim: #5a7a5a;
+  --red: #ff4444;
+  --red-dim: #ff6666;
+  --red-soft: #ff9999;
+  --amber: #ffaa00;
   --mono: 'Share Tech Mono', monospace;
   --display: 'Orbitron', sans-serif;
 }
@@ -151,8 +155,12 @@ nav {
 .nav-dropbtn.active {
   color: var(--green); text-shadow: 0 0 8px var(--green-glow);
 }
-.nav-dropdown:hover .nav-dropbtn::after {
+.nav-dropdown:hover .nav-dropbtn::after,
+.nav-dropdown.open .nav-dropbtn::after {
   transform: rotate(-180deg);
+}
+.nav-dropdown.open .nav-dropbtn {
+  color: var(--green); text-shadow: 0 0 8px var(--green-glow);
 }
 .nav-dropdown-menu {
   display: none;
@@ -165,7 +173,8 @@ nav {
   list-style: none; z-index: 10002;
   padding: 0.4rem 0;
 }
-.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.open .nav-dropdown-menu { display: block; }
 .nav-dropdown-menu li a {
   display: block;
   padding: 0.55rem 1.25rem;
@@ -224,7 +233,13 @@ nav {
   color: var(--green); background: rgba(0,255,0,0.04);
 }
 
-/* ── FOOTER ── */
+/* ── FOOTER ──
+   Two standard variants — copy the matching markup for new pages:
+   1. FULL (index, guide pages): <footer> → .footer-inner (.footer-brand /
+      .footer-support / .footer-credit) + .footer-bottom
+   2. COMPACT (status, transmissions, credits, terms, privacy):
+      <footer class="compact"> → .footer-bottom only
+*/
 footer {
   position: relative; z-index: 1;
   border-top: 2px solid rgba(0,255,0,0.4);
@@ -265,7 +280,24 @@ footer {
 }
 .footer-links a:hover { color: var(--green); }
 .footer-support { text-align: center; }
+.support-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: #5865F2; color: #fff; text-decoration: none;
+  padding: 0.7rem 1.4rem; font-family: var(--mono); font-size: 0.88rem;
+  letter-spacing: 0.1em; transition: all 0.2s; margin-bottom: 0.75rem;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+}
+.support-btn:hover { background: #4752c4; box-shadow: 0 0 20px rgba(88,101,242,0.4); transform: translateY(-1px); }
+.support-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin-top: 0.5rem; }
 .footer-credit { text-align: right; }
+.credit-card { display: flex; align-items: center; gap: 1rem; justify-content: flex-end; }
+.credit-pfp {
+  width: 60px; height: 60px; object-fit: cover; border-radius: 50%;
+  border: 2px solid rgba(0,255,0,0.3);
+  filter: drop-shadow(0 0 10px rgba(0,255,0,0.35)); flex-shrink: 0;
+}
+.credit-name { font-family: var(--display); font-size: 1rem; color: var(--green); letter-spacing: 0.08em; }
+.credit-role { font-size: 0.82rem; color: var(--text-dim); margin-top: 0.25rem; letter-spacing: 0.08em; }
 .footer-bottom {
   max-width: 1200px; margin: 1.5rem auto 0;
   display: flex; align-items: center; justify-content: center;
@@ -276,20 +308,26 @@ footer {
 .footer-bottom a:hover { color: var(--green); }
 .footer-divider { color: rgba(0,255,0,0.3); }
 
+/* Compact footer variant */
+footer.compact { padding: 2rem 2.5rem; text-align: center; }
+footer.compact .footer-bottom { margin-top: 0; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
   .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
   .footer-support { text-align: left; }
   .footer-credit { text-align: left; }
+  .credit-card { justify-content: flex-start; }
 }
 
 @media (max-width: 480px) {
-  .nav-links { display: none; }
-  .nav-hamburger { display: flex; }
   .status-bar { display: none; }
   .nav-logo span { display: none; }
   .footer-logo-img { width: 40px; height: 40px; }
   .footer-tagline { letter-spacing: 0; font-size: 0.75rem; }
   .footer-credit { text-align: left; }
+  .credit-pfp { order: -1; }
   .footer-inner { padding-bottom: 1.5rem; }
 }

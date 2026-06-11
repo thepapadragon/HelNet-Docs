@@ -25,6 +25,23 @@
     });
   }
 
+  // Dropdown click/touch toggle — hover alone never fires on touch devices
+  var dropdowns = document.querySelectorAll('.nav-dropdown');
+  function closeDropdowns() {
+    dropdowns.forEach(function (d) { d.classList.remove('open'); });
+  }
+  dropdowns.forEach(function (dd) {
+    var btn = dd.querySelector('.nav-dropbtn');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var wasOpen = dd.classList.contains('open');
+      closeDropdowns();
+      if (!wasOpen) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', closeDropdowns);
+
   // Active nav state — compare fully-resolved URLs
   var current = window.location.href
     .replace(/[?#].*$/, '')

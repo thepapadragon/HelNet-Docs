@@ -68,7 +68,7 @@
     background: var(--green);
     transition: background 0.3s;
   }
-  .status-banner.offline::before { background: #ff4444; }
+  .status-banner.offline::before { background: var(--red); }
 
   .status-badge {
     display: flex;
@@ -83,7 +83,7 @@
     flex-shrink: 0;
   }
   .status-badge-dot.online { animation: bigPulse 2s infinite; }
-  .status-badge-dot.offline { background: #ff4444; box-shadow: 0 0 8px #ff4444; }
+  .status-badge-dot.offline { background: var(--red); box-shadow: 0 0 8px var(--red); }
   @keyframes bigPulse {
     0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
     50% { opacity: 0.5; box-shadow: 0 0 16px var(--green); }
@@ -95,7 +95,7 @@
     color: var(--green);
     letter-spacing: 0.1em;
   }
-  .status-badge-text.offline { color: #ff4444; }
+  .status-badge-text.offline { color: var(--red); }
 
   .status-meta {
     display: flex;
@@ -191,12 +191,12 @@
     border: 1px solid rgba(255,68,68,0.3);
     background: rgba(255,68,68,0.04);
     padding: 1.5rem 2rem;
-    color: #ff6666;
+    color: var(--red-dim);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
   }
-  .status-error::before { content: '[ERROR] '; color: #ff4444; }
+  .status-error::before { content: '[ERROR] '; color: var(--red); }
 
   /* ── REFRESH ── */
   .refresh-bar {
@@ -255,28 +255,34 @@
       </ul>
     </li>
     <li><a href="transmissions">Transmissions</a></li>
-    <li><a href="status" class="nav-active">Status</a></li>
+    <li><a href="status" class="active">Status</a></li>
     <li><a href="credits">Credits</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <ul>
-    <li><a href="terms">Terms of Service</a></li>
-    <li><a href="privacy">Privacy Policy</a></li>
-    <li class="nav-sep"></li>
-    <li><a href="guides/getting-started">Getting Started</a></li>
-    <li><a href="guides/announcement-module">Announcement Module</a></li>
-    <li><a href="guides/challenges-module">Challenges Module</a></li>
-    <li><a href="guides/deimos-module">Deimos Module</a></li>
-    <li><a href="guides/division-module">Division Module</a></li>
-    <li><a href="guides/infopost-module">Infopost Module</a></li>
-    <li><a href="guides/time-module">Time Module</a></li>
-    <li class="nav-sep"></li>
-    <li><a href="transmissions">Transmissions</a></li>
-    <li><a href="status">Status</a></li>
-    <li><a href="credits">Credits</a></li>
-  </ul>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Navigation</div>
+    <a href="./">Home</a>
+    <a href="transmissions">Transmissions</a>
+    <a href="status">Status</a>
+    <a href="credits">Credits</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Legal</div>
+    <a href="terms">Terms of Service</a>
+    <a href="privacy">Privacy Policy</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Guides</div>
+    <a href="guides/getting-started">Getting Started</a>
+    <a href="guides/announcement-module">Announcement Module</a>
+    <a href="guides/challenges-module">Challenges Module</a>
+    <a href="guides/deimos-module">Deimos Module</a>
+    <a href="guides/division-module">Division Module</a>
+    <a href="guides/infopost-module">Infopost Module</a>
+    <a href="guides/time-module">Time Module</a>
+  </div>
 </div>
 
 <main class="page-wrap">
@@ -327,6 +333,18 @@
     </div>
   </div>
 </main>
+
+<footer class="compact">
+  <div class="footer-bottom">
+    <span>© 2026 HelNet</span>
+    <span class="footer-divider">|</span>
+    <a href="guides/getting-started">Docs</a>
+    <span class="footer-divider">|</span>
+    <a href="terms">Terms of Service</a>
+    <span class="footer-divider">|</span>
+    <a href="privacy">Privacy Policy</a>
+  </div>
+</footer>
 
 <script src="Assets/nav.js"></script>
 <script>

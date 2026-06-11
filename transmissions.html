@@ -74,8 +74,8 @@
     background: var(--green);
     opacity: 0.6;
   }
-  .tx-card[data-priority="HIGH"]::before { background: #ff4444; opacity: 1; }
-  .tx-card[data-priority="MEDIUM"]::before { background: #ffaa00; opacity: 1; }
+  .tx-card[data-priority="HIGH"]::before { background: var(--red); opacity: 1; }
+  .tx-card[data-priority="MEDIUM"]::before { background: var(--amber); opacity: 1; }
   .tx-card[data-priority="LOW"]::before { background: var(--green); }
 
   .tx-header {
@@ -101,8 +101,8 @@
     border: 1px solid currentColor;
     white-space: nowrap;
   }
-  .tx-priority.HIGH { color: #ff4444; }
-  .tx-priority.MEDIUM { color: #ffaa00; }
+  .tx-priority.HIGH { color: var(--red); }
+  .tx-priority.MEDIUM { color: var(--amber); }
   .tx-priority.LOW { color: var(--green-dim); }
 
   .tx-subject {
@@ -144,11 +144,11 @@
     border: 1px solid rgba(255,68,68,0.3);
     background: rgba(255,68,68,0.04);
     padding: 1.5rem 2rem;
-    color: #ff6666;
+    color: var(--red-dim);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
   }
-  .tx-error::before { content: '[ERROR] '; color: #ff4444; }
+  .tx-error::before { content: '[ERROR] '; color: var(--red); }
 </style>
 </head>
 <body>
@@ -180,27 +180,35 @@
         <li><a href="guides/time-module">Time Module</a></li>
       </ul>
     </li>
-    <li><a href="transmissions" class="nav-active">Transmissions</a></li>
+    <li><a href="transmissions" class="active">Transmissions</a></li>
+    <li><a href="status">Status</a></li>
     <li><a href="credits">Credits</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <ul>
-    <li><a href="terms">Terms of Service</a></li>
-    <li><a href="privacy">Privacy Policy</a></li>
-    <li class="nav-sep"></li>
-    <li><a href="guides/getting-started">Getting Started</a></li>
-    <li><a href="guides/announcement-module">Announcement Module</a></li>
-    <li><a href="guides/challenges-module">Challenges Module</a></li>
-    <li><a href="guides/deimos-module">Deimos Module</a></li>
-    <li><a href="guides/division-module">Division Module</a></li>
-    <li><a href="guides/infopost-module">Infopost Module</a></li>
-    <li><a href="guides/time-module">Time Module</a></li>
-    <li class="nav-sep"></li>
-    <li><a href="transmissions">Transmissions</a></li>
-    <li><a href="credits">Credits</a></li>
-  </ul>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Navigation</div>
+    <a href="./">Home</a>
+    <a href="transmissions">Transmissions</a>
+    <a href="status">Status</a>
+    <a href="credits">Credits</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Legal</div>
+    <a href="terms">Terms of Service</a>
+    <a href="privacy">Privacy Policy</a>
+  </div>
+  <div class="nav-mobile-section">
+    <div class="nav-mobile-label">Guides</div>
+    <a href="guides/getting-started">Getting Started</a>
+    <a href="guides/announcement-module">Announcement Module</a>
+    <a href="guides/challenges-module">Challenges Module</a>
+    <a href="guides/deimos-module">Deimos Module</a>
+    <a href="guides/division-module">Division Module</a>
+    <a href="guides/infopost-module">Infopost Module</a>
+    <a href="guides/time-module">Time Module</a>
+  </div>
 </div>
 
 <main class="page-wrap">
@@ -212,6 +220,18 @@
     <div class="tx-empty">LOADING TRANSMISSION LOG...</div>
   </div>
 </main>
+
+<footer class="compact">
+  <div class="footer-bottom">
+    <span>© 2026 HelNet</span>
+    <span class="footer-divider">|</span>
+    <a href="guides/getting-started">Docs</a>
+    <span class="footer-divider">|</span>
+    <a href="terms">Terms of Service</a>
+    <span class="footer-divider">|</span>
+    <a href="privacy">Privacy Policy</a>
+  </div>
+</footer>
 
 <script src="Assets/nav.js"></script>
 <script>

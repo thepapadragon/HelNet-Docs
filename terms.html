@@ -74,29 +74,7 @@
     margin: 2.5rem 0;
   }
 
-  /* FOOTER */
-  footer {
-    position: relative; z-index: 1;
-    border-top: 2px solid rgba(0,255,0,0.4);
-    background: #0a1a0a;
-    padding: 2rem;
-    text-align: center;
-  }
 
-  .footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    font-size: 0.82rem;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    flex-wrap: wrap;
-  }
-
-  .footer-bottom a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
-  .footer-bottom a:hover { color: var(--green); }
-  .footer-divider { color: rgba(0,255,0,0.3); }
 </style>
 </head>
 <body>
@@ -111,11 +89,10 @@
 </div>
 <nav>
   <a href="./" class="nav-logo">
-    <img src="Assets/HelNet_Logo.png" alt="">
+    <img src="Assets/HelNet_Logo.png" alt="HelNet Logo">
     HELNET <span>LEGAL</span>
   </a>
   <ul class="nav-links">
-    <li><a href="./">Home</a></li>
     <li class="nav-dropdown">
       <button class="nav-dropbtn">Legal</button>
       <ul class="nav-dropdown-menu">
@@ -136,6 +113,8 @@
         <li><a href="guides/time-module">Time Module</a></li>
       </ul>
     </li>
+    <li><a href="transmissions">Transmissions</a></li>
+    <li><a href="status">Status</a></li>
     <li><a href="credits">Credits</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
@@ -144,6 +123,8 @@
   <div class="nav-mobile-section">
     <div class="nav-mobile-label">Navigation</div>
     <a href="./">Home</a>
+    <a href="transmissions">Transmissions</a>
+    <a href="status">Status</a>
     <a href="credits">Credits</a>
   </div>
   <div class="nav-mobile-section">
@@ -207,7 +188,7 @@
   </div>
 </div>
 
-<footer>
+<footer class="compact">
   <div class="footer-bottom">
     <span>© 2026 HelNet</span>
     <span class="footer-divider">|</span>
